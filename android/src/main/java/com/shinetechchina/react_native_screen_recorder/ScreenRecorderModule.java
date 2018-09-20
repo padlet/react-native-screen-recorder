@@ -112,11 +112,14 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule
         Intent captureIntent = projectionManager.createScreenCaptureIntent();
         getCurrentActivity().startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
     }
+
     @ReactMethod
-    public void stop()
+    public void stop(Callback successCallback)
     {
-        recordService.stopRecord();
+        // Should return the output file for the recording
+        successCallback.invoke(recordService.stopRecord());
     }
+
     @Override
     public String getName() {
         return "ScreenRecorderManager";
@@ -145,4 +148,3 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule
         return getCurrentActivity();
     }
 }
-
