@@ -22,6 +22,8 @@ public class RecordService extends Service {
     private MediaRecorder mediaRecorder;
     private VirtualDisplay virtualDisplay;
 
+    private String filePath;
+
     private boolean running;
     private int width = 720;
     private int height = 1080;
@@ -79,9 +81,10 @@ public class RecordService extends Service {
         return true;
     }
 
-    public boolean stopRecord() {
-        if (!running) {
-            return false;
+    public String stopRecord() {
+        if (!running)
+        {
+            return filePath;
         }
         running = false;
         mediaRecorder.stop();
@@ -89,7 +92,7 @@ public class RecordService extends Service {
         virtualDisplay.release();
         mediaProjection.stop();
 
-        return true;
+        return filePath;
     }
 
     private void createVirtualDisplay() {
@@ -98,10 +101,11 @@ public class RecordService extends Service {
     }
 
     private void initRecorder() {
+        filePath = getsaveDirectory() + System.currentTimeMillis() + ".mp4";
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(getsaveDirectory() + System.currentTimeMillis() + ".mp4");
+        mediaRecorder.setOutputFile(filePath);
         mediaRecorder.setVideoSize(width, height);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
@@ -138,4 +142,3 @@ public class RecordService extends Service {
             return RecordService.this;
         }
     }}
-
