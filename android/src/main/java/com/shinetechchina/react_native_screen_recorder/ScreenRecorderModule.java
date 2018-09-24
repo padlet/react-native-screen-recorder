@@ -78,6 +78,7 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule
         this.reactContext.addActivityEventListener(this);
         reactContext.startService(new Intent(reactContext, RecordService.class));
     }
+
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -91,6 +92,7 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule
         @Override
         public void onServiceDisconnected(ComponentName arg0) {}
     };
+
     @ReactMethod
     public void start()
     {
@@ -111,6 +113,13 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule
         getCurrentActivity().bindService(intent, connection,  getCurrentActivity().BIND_AUTO_CREATE);
         Intent captureIntent = projectionManager.createScreenCaptureIntent();
         getCurrentActivity().startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
+    }
+
+    @ReactMethod
+    public void isRunning(Callback successCallback)
+    {
+        // Should return the output file for the recording
+        successCallback.invoke(recordService.isRunning());
     }
 
     @ReactMethod
