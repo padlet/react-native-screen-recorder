@@ -40,6 +40,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.PermissionListener;
+import com.facebook.react.bridge.Promise;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -116,10 +117,9 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule
     }
 
     @ReactMethod
-    public void isRunning(Callback successCallback)
+    public void isRunning(Promise promise)
     {
-        // Should return the output file for the recording
-        successCallback.invoke(recordService.isRunning());
+        promise.resolve((recordService != null) ? recordService.isRunning() : false);
     }
 
     @ReactMethod
